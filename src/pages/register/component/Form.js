@@ -1,6 +1,6 @@
 import React from "react";
 import "./form.css";
-import Validationform from "./formvaidation";
+// import Validationform from "./formvaidation";
 import { useState, useEffect } from "react";
 import { type } from "@testing-library/user-event/dist/type";
 
@@ -14,10 +14,10 @@ const Register1 = () => {
     gender: "",
     dateofbirth: "",
     address: "",
-    
+
   });
-  const [inputAchie, setInputAchie] = useState([{ achiev: "" , achievd :""}]);
-  const [formValues, setFormValues] = useState([{ interest:"" }]);
+  const [inputAchie, setInputAchie] = useState([{ achiev: "", achievd: "" }]);
+  const [formValues, setFormValues] = useState([{ interest: "" }]);
   // const [achi, setAchie] = useState([{ achiev : "",achievd:""}])
 
   console.log(values, "efef");
@@ -28,7 +28,7 @@ const Register1 = () => {
   // validation function
   function handleInput(event) {
     const dataForm = { ...values, [event.target.name]: event.target.value };
- 
+
     setValues(dataForm);
 
     // let val = [{...values}];
@@ -37,7 +37,7 @@ const Register1 = () => {
   }
   // function handleInputac(e,index) {
   //   // const dataForm = { ...values, [event.target.name]: [event.target.value] };
- 
+
   //   // setValues(dataForm);
 
   //   let val = [...achi];
@@ -45,24 +45,112 @@ const Register1 = () => {
   //   setAchie(val)
   // }
 
-
   // function for
+
+  function validation(values) {
+    const error = {};
+
+    let currentDate = new Date();
+    console.log(currentDate,"curr datwe");
+    console.log(currentDate.toISOString().substring(0, 10), "curr date");
+    let dateofbirth = new Date(values.dateofbirth);
+
+    if (values.name.trim() === "") {
+      error.name = "Name is required*";
+    } else if (!/^[a-zA-Z]*$/g.test(values.name.trim())) {
+      error.name = "*Enter a Valid  First Name*";
+    }
+
+    if (values.lastname.trim() === "") {
+      error.lastname = "Last Name is required*";
+    } else if (!/^[a-zA-Z]*$/g.test(values.lastname.trim())) {
+      error.lastname = "*Enter a Valid  Last Name*";
+    }
+
+    if (values.mail.trim() === "") {
+      error.mail = "Email is required*";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.mail.trim())
+    ) {
+      error.mail = "*Enter a Valid Email Address ";
+    }
+
+    if (values.state.trim() === "") {
+      error.state = "*State is required*";
+    } else if (!/^[a-zA-Z]*$/g.test(values.state.trim())) {
+      error.state = "*Enter a Valid  State";
+    }
+    if (values.city.trim() === "") {
+      error.city = "*City is required";
+    } else if (!/^[a-zA-Z]*$/g.test(values.city.trim())) {
+      error.city = "*Enter a Valid City";
+    }
+
+    if (values.gender === "") {
+      error.gender = "Gender is required*";
+    }
+    if (values.dateofbirth === "") {
+      error.dateofbirth = "*dob is required";
+    } else if (
+      dateofbirth.getFullYear() < 1980 ||
+      dateofbirth > currentDate.toISOString().substring(0, 10)
+    ) {
+      error.dateofbirth = "*You Are Not Eligible for this Form";
+    }
+    if (values.address.trim() === "") {
+      error.address = "Address is required";
+    }
+
+    const data = [...inputAchie];
+    for (let i = 0; i < data.length; i++) {
+      console.log(data[i], "vivek plas");
+
+      if (data[i].achiev === "" || data[i].achievd === ""  ) {
+        data[i].achievcheck = "Achievemnt and date  is required";
+      }else if( data[i].achievd  >= currentDate.toISOString().substring(0, 10)){
+        data[i].achievcheck = "Enter A valid Date";
+      }
+      
+      else {
+        data[i].achievcheck = "";
+      }
+      setInputAchie(data);
+    }
+const interestdata = [...formValues]
+
+console.log(interestdata,"interest data vivek");
+    for (let j = 0; j < interestdata.length; j++) {
+   
+      console.log(interestdata[j],"vivek ++++");
+    
+    if (interestdata[j].interest === "") {
+      interestdata[j].errorinterest = "interest is required";
+    }else{
+      interestdata[j].errorinterest = "";
+    }
+    setFormValues(interestdata)
+    }
+
+    return error;
+
+    // setInputAchie(Validationform(inputAchie))
+    // console.log(values,"12");
+  }
 
   function formvalidation(event) {
     event.preventDefault();
 
-    setErrors(Validationform(values,inputAchie,formValues));
-    console.log(values,"12");
+    setErrors(validation(values));
   }
 
-  let handleChange = (i,e) => {
+  let handleChange = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
-    console.log( newFormValues,"vivek0000");
+    console.log(newFormValues, "vivek0000");
   };
   let addFormFields = () => {
-    setFormValues([...formValues, { name: "", email: "" }]);
+    setFormValues([...formValues, { interest: ""}]);
   };
 
   let removeFormFields = (i) => {
@@ -72,10 +160,7 @@ const Register1 = () => {
   };
 
   let handleChangeachie = (i, e) => {
-    let newFormValuesac = [...inputAchie];
-    newFormValuesac[i][e.target.name] = e.target.value;
-    setInputAchie(newFormValuesac);
-    console.log(newFormValuesac,"fsfsfsfs");
+ 
   };
 
   let addAchievmentfields = () => {
@@ -235,66 +320,65 @@ const Register1 = () => {
             </div>
             <div>
               <label>Interest :</label>
-             
             </div>
-           
+
             <div>
-      {" "}
-      {formValues.map((element, index) => {
-        
-        return (
-          <div >
-            <div className="interestdiv">
+              {" "}
+              {formValues.map((element, index) => {
+                return (
+                  <div>
+                    <div className="interestdiv">
+                      <div className="insterestaddbutton">
+                        <input
+                          type="text"
+                          name="interest"
+                          id="interest"
+                          placeholder="Interest"
+                          value={element.interest || ""}
+                          onChange={(e) => handleChange(index, e)}
+                        ></input>
+                      </div>
+
+                      <div className="col">
+                        {index ? (
+                          <button
+                            type="button"
+                            className="button remove"
+                            onClick={() => removeFormFields(index)}
+                          >
+                            -
+                          </button>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div>
+                      {element.errorinterest && (
+                        <p className="valicolor">{element.errorinterest}</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
               <div className="insterestaddbutton">
-                <input
-                
-                  type="text"
-                  name="interest"
-                  id="interest"
-                  placeholder="Interest"
-                  value={element.interest || ""}
-                  onChange={(e) => handleChange(index,e)}
-                ></input>
-              </div>
-
-              <div className="col">
-                {index ? (
-                  <button
-                    type="button"
-                    className="button remove"
-                    onClick={() => removeFormFields(index)}
-                  >
-                    -
-                  </button>
-                ) : null}
+                <p
+                  className="addinterestbutton"
+                  onClick={() => addFormFields()}
+                >
+                  +
+                </p>
               </div>
             </div>
-          </div>
-        );
-      })}
-      <div className="insterestaddbutton">
-        <p className="addinterestbutton" onClick={() => addFormFields()}>
-          +
-        </p>
-      </div>
-      <div>
-              {error.interest && <p className="valicolor">{error.interest}</p>}
-            </div>
-    </div>
-
 
             <div>
               <label>Achievement</label>
             </div>
 
             {inputAchie.map((element, index) => {
-            
               return (
                 <div>
                   <div className="interestdiv">
                     <div className="insterestaddbutton">
                       <input
-                       
                         type="text"
                         placeholder="Achievement Title"
                         name="achiev"
@@ -304,12 +388,13 @@ const Register1 = () => {
                     </div>
                     <div className="insterestaddbutton dateach">
                       <input
-                         type="date"
+                        type="date"
                         name="achievd"
                         value={element.achievd || ""}
                         onChange={(e) => handleChangeachie(index, e)}
                       ></input>
                     </div>
+
                     <div className="col">
                       {index ? (
                         <button
@@ -320,8 +405,12 @@ const Register1 = () => {
                           -
                         </button>
                       ) : null}
-                
                     </div>
+                  </div>
+                  <div>
+                    {element.achievcheck && (
+                      <p className="valicolor">{element.achievcheck}</p>
+                    )}
                   </div>
                 </div>
               );
@@ -333,12 +422,7 @@ const Register1 = () => {
               >
                 +
               </p>
-              <div>
-              {error.achiev && <p className="valicolor">{error.achiev}</p>}
             </div>
-            </div>
-
-           
 
             <div>
               <input type="submit"></input>
