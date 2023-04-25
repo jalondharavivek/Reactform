@@ -1,19 +1,70 @@
-export default function Validationform(values) {
-  const error = {};
-  //const email_regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+export default function Validationform(values,inputAchie,formValues) {
+
+  let error = {};
+console.log(values,"vivekvalue");
+console.log(inputAchie,"LOg");
+
   if (values.name.trim() === "") {
     error.name = "Name is required*";
+  }else if(!/^[a-zA-Z]*$/g.test(values.name.trim())){
+    error.name = "*Enter a Valid  First Name*"
   }
 
   if (values.lastname.trim() === "") {
     error.lastname = "Last Name is required*";
+  }else if(!/^[a-zA-Z]*$/g.test(values.lastname.trim())){
+    error.lastname = "*Enter a Valid  Last Name*"
   }
 
-  if (values.mail === "") {
+  if (values.mail.trim() === "") {
     error.mail = "Email is required*";
-  }else{
-    error.mail = ""
+  }else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.mail.trim())){
+    error.mail = "*Enter a Valid Email Address "
   }
+
+  if (values.state.trim() === "") {
+    error.state = "*State is required*";
+  }else if(!/^[a-zA-Z]*$/g.test(values.state.trim())){
+    error.state = "*Enter a Valid  State"
+  }
+  if (values.city.trim() === "") {
+    error.city = "*City is required";
+  }else if(!/^[a-zA-Z]*$/g.test(values.city.trim())){
+    error.city = "*Enter a Valid City"
+  }
+
+  if (values.gender === "") {
+    error.gender = "Gender is required*";
+  }
+  if (values.dateofbirth === "") {
+    error.dateofbirth = "*dob is required";
+  }
+  else if (values.dateofbirth.slice(0,4) < 1980) {
+    error.dateofbirth = "*You Are Not Eligible for this Form";
+
+  }
+  if (values.address.trim() === "") {
+    error.address = "Address is required";
+  }
+ 
+  for (let i = 0; i < inputAchie.length; i++) {
+   
+    console.log(inputAchie[i],"vivek plas");
+  
+  if (inputAchie[i].achiev === "") {
+    error.achiev = "ach is required";
+  }
+  }
+  for (let j = 0; j < formValues.length; j++) {
+   
+    console.log(formValues[j],"vivek ++++");
+  
+  if (formValues[j].interest === "") {
+    error.interest = "interest is required";
+  }
+  }
+
 
   return error;
 }

@@ -56,3 +56,28 @@ textarea{
 .valicolor{
     color: red;
 }
+.interestdiv{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-items: baseline;
+}
+.insterestaddbutton{
+ margin-right: 10px;
+
+}
+.addinterestbutton{
+    background-color: #8d9279; /* Green */
+    border: none;
+    color: white;
+    padding: 7px 14px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 5PX;
+    cursor: default;
+}
+.dateach{
+    border-radius: 5px;
+}
